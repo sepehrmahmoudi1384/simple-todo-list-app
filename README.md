@@ -13,5 +13,5 @@
   <dt>Easy-To-Use</dt>
   <dd>we've tried to design a easy-to-use user-interface. you can easily manage, modify and complete your tasks.</dd>
   <dt>Display Tasks as a table</dt>
-  <dd>You can easily in summarize your tasks in a table! don't worry the table can easily displyed on small devices :)</dd>
+  <dd>You can easily in summarize your tasks in a table! don't worry, the table can easily displyed on small devices :)</dd>
 </dl>
