@@ -4,6 +4,7 @@
   This repository contains a simple but responsive todo-list app. created with HTML, CSS and JS.
 </p>
 <h3>Features</h3>
+<hr>
 <dl>
   <dt>Responsive</dt>
   <dd>Compatible with desktops and mobiles</dd>
