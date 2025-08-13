@@ -4,7 +4,15 @@ const addTask = document.getElementById("addTask");
 
 let counter = -1;
 
-addTask.addEventListener("click", function () {
+addTask.addEventListener("click", createTask);
+
+taskInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+        createTask();
+    }
+});
+
+function createTask() {
     if (taskInput.value.trim() !== "") {
         counter++;
         taskList.innerHTML += `
@@ -16,8 +24,9 @@ addTask.addEventListener("click", function () {
             </article>
         `;
         taskInput.value = "";
+        taskInput.focus();
     }
-});
+}
 
 function removeTask(taskId) {
     const task = document.querySelector(`[data-task-id="${taskId}"]`);
