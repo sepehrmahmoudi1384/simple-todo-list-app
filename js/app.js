@@ -2,7 +2,7 @@ const taskList = document.getElementById("taskList");
 const taskInput = document.getElementById("taskInput");
 const addTask = document.getElementById("addTask");
 
-let counter = -1;
+let taskCounter = 0;
 
 addTask.addEventListener("click", createTask);
 
@@ -14,14 +14,14 @@ taskInput.addEventListener("keypress", (e) => {
 
 function createTask() {
     if (taskInput.value.trim() !== "") {
-        counter++;
+        taskCounter++;
         taskList.innerHTML += `
-            <article class="flex-task-item" data-task-id="${counter}">
+            <li class="task-item" data-task-id="${taskCounter}">
                 <p class="task-title">${taskInput.value}</p>
-                <button class="remove-task" onclick="removeTask(${counter})">
+                <button class="remove-task" onclick="removeTask(${taskCounter})">
                     <i class="fa fa-times"></i>
                 </button>
-            </article>
+            </li>
         `;
         taskInput.value = "";
         taskInput.focus();

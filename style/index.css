@@ -5,12 +5,7 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body,
-html {
-  height: 100%;
-}
-
-.flex-header {
+header {
   background-color: steelblue;
   height: 150px;
   display: flex;
@@ -27,7 +22,7 @@ html {
   font-size: 30px;
 }
 
-.flex-group {
+.input-group {
   display: flex;
   width: 80%;
   justify-content: center;
@@ -35,11 +30,11 @@ html {
   transition: transform 0.3s ease-out;
 }
 
-.flex-group:hover {
+.input-group:hover {
   transform: scale(1.05);
 }
 
-.new-task-title {
+.task-input {
   flex-basis: 80%;
   padding: 15px;
   height: 100%;
@@ -50,7 +45,7 @@ html {
   font-size: 20px;
 }
 
-.add-new-task {
+.add-task {
   flex-basis: 20%;
   height: 100%;
   border: none;
@@ -62,13 +57,14 @@ html {
   font-size: 20px;
 }
 
-.flex-task-list-container {
+.task-list-container {
   display: flex;
   height: calc(100% - 150px);
   justify-content: center;
 }
 
-.flex-task-list {
+.task-list {
+  list-style-type: none;
   flex-basis: 80%;
   display: flex;
   flex-wrap: wrap;
@@ -77,7 +73,7 @@ html {
   counter-reset: task-counter;
 }
 
-.flex-task-item {
+.task-item {
   flex-basis: 100%;
   display: flex;
   justify-content: space-between;
