@@ -1,34 +1,69 @@
+import TodoTask from "./TodoTask.js";
+
+// finding elements in the page
 const taskList = document.getElementById("taskList");
 const taskInput = document.getElementById("taskInput");
-const addTask = document.getElementById("addTask");
+const addTaskBtn = document.getElementById("addTask");
 
-let taskCounter = 0;
+// all todo-task stored in this array
+let todos = [];
 
-addTask.addEventListener("click", createTask);
-
-taskInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-        createTask();
-    }
+// add todo-task to todo-list
+addTaskBtn.addEventListener("click", (e) => {
+  if (taskInput.value.trim() !== "") {
+    addTaskToTodos(taskInput.value);
+    cleanTaskInput();
+  }
 });
 
-function createTask() {
-    if (taskInput.value.trim() !== "") {
-        taskCounter++;
-        taskList.innerHTML += `
-            <li class="task-item" data-task-id="${taskCounter}">
-                <p class="task-title">${taskInput.value}</p>
-                <button class="remove-task" onclick="removeTask(${taskCounter})">
-                    <i class="fa fa-times"></i>
-                </button>
-            </li>
-        `;
-        taskInput.value = "";
-        taskInput.focus();
-    }
+taskInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter" && taskInput.value.trim(taskInput.value) !== "") {
+    addTaskToTodos();
+    cleanTaskInput();
+  }
+});
+
+function cleanTaskInput() {
+  taskInput.value = "";
+  taskInput.focus();
+}
+
+function addTaskToTodos(taskTitle) {
+  todos.push(new TodoTask(taskTitle));
+  refreshTaskList();
 }
 
 function removeTask(taskId) {
-    const task = document.querySelector(`[data-task-id="${taskId}"]`);
-    taskList.removeChild(task);
+  todos = todos.filter((_, index) => index != taskId);
+  refreshTaskList();
+}
+
+function refreshTaskList() {
+  taskList.innerHTML = "";
+
+  todos.forEach((todo, taskId) => {
+    const task = createElement("li", taskList, ["class", "task-item"]);
+
+    const title = createElement("p", task, ["class", "task-title"]);
+    title.innerText = todo.taskTitle;
+
+    const btnRemoveTask = createElement("button", task, [
+      "class",
+      "remove-task",
+    ]);
+    btnRemoveTask.innerHTML = `<i class="fa fa-times"></i>`;
+    btnRemoveTask.addEventListener("click", () => {
+      removeTask(taskId);
+      refreshTaskList();
+    });
+  });
+}
+
+function createElement(tagName, parent = document.body, ...attrs) {
+  const ele = document.createElement(tagName);
+  attrs.forEach((attr) => {
+    ele.setAttribute(attr[0], attr[1]);
+  });
+  parent.appendChild(ele);
+  return ele;
 }
