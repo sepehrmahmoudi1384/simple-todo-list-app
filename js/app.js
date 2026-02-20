@@ -5,21 +5,31 @@ const taskList = document.getElementById("taskList");
 const taskInput = document.getElementById("taskInput");
 const addTaskBtn = document.getElementById("addTask");
 
-// all todo-task stored in this array
-let todos = [];
+// initialize local storage
+if (!localStorage.getItem('todos')) {
+  localStorage.setItem('todos', '[]');
+}
+
+const fetchTasksFromLocalStorage = () => {
+  return JSON.parse(localStorage.getItem('todos')) || [];
+};
+
+refreshTaskList();
 
 // add todo-task to todo-list
 addTaskBtn.addEventListener("click", (e) => {
   if (taskInput.value.trim() !== "") {
     addTaskToTodos(taskInput.value);
     cleanTaskInput();
+    refreshTaskList();
   }
 });
 
 taskInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter" && taskInput.value.trim(taskInput.value) !== "") {
-    addTaskToTodos();
+  if (e.key === "Enter" && taskInput.value.trim() !== "") {
+    addTaskToTodos(taskInput.value.trim());
     cleanTaskInput();
+    refreshTaskList();
   }
 });
 
@@ -29,19 +39,27 @@ function cleanTaskInput() {
 }
 
 function addTaskToTodos(taskTitle) {
+  const todos = fetchTasksFromLocalStorage();
   todos.push(new TodoTask(taskTitle));
-  refreshTaskList();
+  localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+function removeByIndex(arr, index) {
+  if (index > -1) {
+    arr.splice(index, 1);
+  }
 }
 
 function removeTask(taskId) {
-  todos = todos.filter((_, index) => index != taskId);
-  refreshTaskList();
+  const todos = fetchTasksFromLocalStorage();
+  removeByIndex(todos, taskId);
+  localStorage.setItem('todos', JSON.stringify(todos));
 }
 
 function refreshTaskList() {
   taskList.innerHTML = "";
 
-  todos.forEach((todo, taskId) => {
+  fetchTasksFromLocalStorage().forEach((todo, taskId) => {
     const task = createElement("li", taskList, ["class", "task-item"]);
 
     const title = createElement("p", task, ["class", "task-title"]);
