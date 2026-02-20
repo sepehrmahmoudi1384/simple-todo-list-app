@@ -2,8 +2,8 @@ import TodoTask from "./TodoTask.js";
 
 // finding elements in the page
 const taskList = document.getElementById("taskList");
-const taskInput = document.getElementById("taskInput");
-const addTaskBtn = document.getElementById("addTask");
+const inputTaskTitle = document.getElementById("inputTaskTitle");
+const btnAddTask = document.getElementById("addTask");
 
 // initialize local storage
 if (!localStorage.getItem('todos') || localStorage.getItem('todos') == '{}') {   
@@ -15,37 +15,37 @@ const fetchTasksFromLocalStorage = () => {
   return JSON.parse(localStorage.getItem('todos'));
 };
 
-refreshTaskList();
+loadTasks();
 
 // add todo-task to todo-list
-addTaskBtn.addEventListener("click", (e) => {
-  if (taskInput.value.trim() !== "") {
-    addTaskToTodos(taskInput.value);
-    cleanTaskInput();
-    refreshTaskList();
+btnAddTask.addEventListener("click", (e) => {
+  if (inputTaskTitle.value.trim() !== "") {
+    addTaskToList(inputTaskTitle.value);
+    cleanInput();
+    loadTasks();
   }
 });
 
-taskInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter" && taskInput.value.trim() !== "") {
-    addTaskToTodos(taskInput.value.trim());
-    cleanTaskInput();
-    refreshTaskList();
+inputTaskTitle.addEventListener("keypress", (e) => {
+  if (e.key === "Enter" && inputTaskTitle.value.trim() !== "") {
+    addTaskToList(inputTaskTitle.value.trim());
+    cleanInput();
+    loadTasks();
   }
 });
 
-function cleanTaskInput() {
-  taskInput.value = "";
-  taskInput.focus();
+function cleanInput() {
+  inputTaskTitle.value = "";
+  inputTaskTitle.focus();
 }
 
-function addTaskToTodos(taskTitle) {
+function addTaskToList(taskTitle) {
   const todos = fetchTasksFromLocalStorage();
   todos.push(new TodoTask(taskTitle));
-  saveTasksInStorage(todos);
+  saveTasks(todos);
 }
 
-function saveTasksInStorage(todos) {
+function saveTasks(todos) {
   localStorage.setItem('todos', JSON.stringify(todos));
 }
 
@@ -60,13 +60,14 @@ function completeTask(taskId) {
   const todos = fetchTasksFromLocalStorage();
   const task = todos.find(todo => todo.id === taskId);  
   task.completed = !task.completed;
-  saveTasksInStorage(todos);
+  saveTasks(todos);
 }
 
-function refreshTaskList() {
+function loadTasks() {
   taskList.innerHTML = "";
 
-  fetchTasksFromLocalStorage().forEach((todo) => {
+  const todos = fetchTasksFromLocalStorage();
+  todos.forEach((todo) => {
     const task = createElement("li", taskList, ["class", "task-item"]);
 
     const title = createElement("p", task, ["class", "task-title"]);
@@ -90,7 +91,7 @@ function refreshTaskList() {
     btnCompleteTask.innerHTML = `<i class="fa fa-check-circle-o"></i>`;
     btnCompleteTask.addEventListener("click", () => {
       completeTask(todo.id);
-      refreshTaskList();
+      loadTasks();
     });
 
     const btnRemoveTask = createElement("button", actionsTask, [
@@ -100,7 +101,7 @@ function refreshTaskList() {
     btnRemoveTask.innerHTML = `<i class="fa fa-times"></i>`;
     btnRemoveTask.addEventListener("click", () => {
       removeTask(todo.id);
-      refreshTaskList();
+      loadTasks();
     });
 
   });
