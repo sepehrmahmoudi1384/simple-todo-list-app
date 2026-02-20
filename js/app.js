@@ -6,12 +6,13 @@ const taskInput = document.getElementById("taskInput");
 const addTaskBtn = document.getElementById("addTask");
 
 // initialize local storage
-if (!localStorage.getItem('todos')) {
-  localStorage.setItem('todos', '[]');
+if (!localStorage.getItem('todos') || localStorage.getItem('todos') == '{}') {   
+
+  localStorage.setItem('todos', '[]');  
 }
 
 const fetchTasksFromLocalStorage = () => {
-  return JSON.parse(localStorage.getItem('todos')) || [];
+  return JSON.parse(localStorage.getItem('todos'));
 };
 
 refreshTaskList();
@@ -48,36 +49,60 @@ function saveTasksInStorage(todos) {
   localStorage.setItem('todos', JSON.stringify(todos));
 }
 
-function removeByIndex(arr, index) {
-  if (index > -1) {
-    arr.splice(index, 1);
-  }
-}
-
 function removeTask(taskId) {
   const todos = fetchTasksFromLocalStorage();
-  removeByIndex(todos, taskId);
+  const index = todos.findIndex(todo => todo.id = taskId);
+  todos.splice(index, 1);
   localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+function completeTask(taskId) {  
+  const todos = fetchTasksFromLocalStorage();
+  const task = todos.find(todo => todo.id == taskId);  
+  task.completed = !task.completed;
+  saveTasksInStorage(todos);
 }
 
 function refreshTaskList() {
   taskList.innerHTML = "";
 
-  fetchTasksFromLocalStorage().forEach((todo, taskId) => {
+  fetchTasksFromLocalStorage().forEach((todo) => {
     const task = createElement("li", taskList, ["class", "task-item"]);
 
     const title = createElement("p", task, ["class", "task-title"]);
     title.innerText = todo.taskTitle;
 
-    const btnRemoveTask = createElement("button", task, [
+    const actionsTask = createElement('span', task, [
+      'class',
+      'actions-task'
+    ]);
+
+
+    const btnCompleteTask = createElement('button', actionsTask, [
+      "class",
+      "complete-task",
+    ]);
+
+    if (todo.completed) {
+      btnCompleteTask.classList.add('task-complete');
+    }
+
+    btnCompleteTask.innerHTML = `<i class="fa fa-check-circle-o"></i>`;
+    btnCompleteTask.addEventListener("click", () => {
+      completeTask(todo.id);
+      refreshTaskList();
+    });
+
+    const btnRemoveTask = createElement("button", actionsTask, [
       "class",
       "remove-task",
     ]);
     btnRemoveTask.innerHTML = `<i class="fa fa-times"></i>`;
     btnRemoveTask.addEventListener("click", () => {
-      removeTask(task.id);
+      removeTask(todo.id);
       refreshTaskList();
     });
+
   });
 }
 
