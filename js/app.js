@@ -41,6 +41,10 @@ function cleanTaskInput() {
 function addTaskToTodos(taskTitle) {
   const todos = fetchTasksFromLocalStorage();
   todos.push(new TodoTask(taskTitle));
+  saveTasksInStorage(todos);
+}
+
+function saveTasksInStorage(todos) {
   localStorage.setItem('todos', JSON.stringify(todos));
 }
 
@@ -71,7 +75,7 @@ function refreshTaskList() {
     ]);
     btnRemoveTask.innerHTML = `<i class="fa fa-times"></i>`;
     btnRemoveTask.addEventListener("click", () => {
-      removeTask(taskId);
+      removeTask(task.id);
       refreshTaskList();
     });
   });
