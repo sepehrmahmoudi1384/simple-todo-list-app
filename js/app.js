@@ -51,14 +51,14 @@ function saveTasksInStorage(todos) {
 
 function removeTask(taskId) {
   const todos = fetchTasksFromLocalStorage();
-  const index = todos.findIndex(todo => todo.id = taskId);
+  const index = todos.findIndex(todo => todo.id === taskId);
   todos.splice(index, 1);
   localStorage.setItem('todos', JSON.stringify(todos));
 }
 
 function completeTask(taskId) {  
   const todos = fetchTasksFromLocalStorage();
-  const task = todos.find(todo => todo.id == taskId);  
+  const task = todos.find(todo => todo.id === taskId);  
   task.completed = !task.completed;
   saveTasksInStorage(todos);
 }
