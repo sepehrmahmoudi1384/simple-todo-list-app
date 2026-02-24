@@ -14,14 +14,21 @@ export function createElement(tagName, parentElement, attrs) {
 export function removeTodo(taskId) {
   const todos = fetchTasksFromLocalStorage();
   const index = todos.findIndex(todo => todo.id === taskId);
-  todos.splice(index, 1);
+
+  if (index !== -1) {
+    todos.splice(index, 1);
+  }
+
   syncTodoList(todos);
 }
 
 export function toggleCompleteTodo(taskId) {
   const todos = fetchTasksFromLocalStorage();
   const task = todos.find(todo => todo.id === taskId);
+  
+  if (!task) return;
   task.completed = !task.completed;
+  
   syncTodoList(todos);
 }
 
@@ -31,7 +38,7 @@ export function addTodo(taskTitle) {
   syncTodoList(todos);
 }
 
-export function fetchTasksFromLocalStorage(){
+export function fetchTasksFromLocalStorage() {
   return JSON.parse(localStorage.getItem('todos') || []);
 }
 
