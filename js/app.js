@@ -12,6 +12,15 @@ const taskList = document.getElementById("taskList");
 const inputTaskTitle = document.getElementById("inputTaskTitle");
 const btnAddTask = document.getElementById("addTask");
 
+
+(function(){
+  const todoListStorage = localStorage.getItem("todos");
+  if (!todoListStorage) {
+    localStorage.setItem("todos", "[]");
+  }
+})();
+
+
 renderTodoList();
 
 // add todo-task to todo-list

@@ -39,7 +39,7 @@ export function addTodo(taskTitle) {
 }
 
 export function fetchTasksFromLocalStorage() {
-  return JSON.parse(localStorage.getItem('todos') || []);
+  return JSON.parse(localStorage.getItem('todos'));
 }
 
 function syncTodoList(todos) {
