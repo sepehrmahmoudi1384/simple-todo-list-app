@@ -1,11 +1,13 @@
 import {
-  createElement,
-  addTodo,
-  removeTodo,
-  toggleCompleteTodo, 
-  fetchTasksFromLocalStorage
-} from "./functions.js";
+  createElement
+} from "./helper-functions.js";
 
+import {
+  addTodo,
+  fetchTasksFromLocalStorage,
+  removeTodo,
+  toggleCompleteTodo
+} from "./todo-functions.js";
 
 // finding elements in the page
 const taskList = document.getElementById("taskList");
@@ -13,7 +15,7 @@ const inputTaskTitle = document.getElementById("inputTaskTitle");
 const btnAddTask = document.getElementById("addTask");
 
 
-(function(){
+(function () {
   const todoListStorage = localStorage.getItem("todos");
   if (!todoListStorage) {
     localStorage.setItem("todos", "[]");
