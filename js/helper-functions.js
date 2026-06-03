@@ -1,5 +1,6 @@
-import { TodoTask } from "./todo-task.js";
+// helper-functions.js
 
+import { TodoTask } from "./todo-task.js";
 
 export function createElement(tagName, parentElement, attrs) {
   const element = document.createElement(tagName);
@@ -10,4 +11,3 @@ export function createElement(tagName, parentElement, attrs) {
   parentElement.appendChild(element);
   return element;
 }
-

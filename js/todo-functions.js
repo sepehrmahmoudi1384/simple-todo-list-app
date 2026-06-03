@@ -1,5 +1,6 @@
-import {TodoTask} from "./todo-task.js";
+// todo-functions.js
 
+import {TodoTask} from "./todo-task.js";
 
 export function addTodo(taskTitle) {
     const todos = fetchTasksFromLocalStorage();
